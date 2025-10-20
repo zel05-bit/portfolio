@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PORTFOLIO</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* General Styles */
+   .logo-link {
+  text-decoration: none;
+  display: inline-block;
+ 
+}
+
+.logo-link:hover {
+  text-decoration: none;
+}
+
+.logo-link:hover .logo-title {
+  color: #ffe5ec; /* soft pink on hover */
+  transform: scale(1.05);
+  text-decoration: none; /* just in case */
+ 
+}
+
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #fff6f6;
+      color: #333;
+    }
+
+    /* Navbar */
+    nav {
+      background-color: #45cbac;
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #fff;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    nav ul li {
+      display: inline;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    /* Nav animation */
+    nav ul li a,
+    .contact-btn {
+      position: relative;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    nav ul li a:hover,
+    .contact-btn:hover {
+      transform: scale(1.1);
+      color: #ffe5ec;
+    }
+
+    .contact-btn {
+      background-color: #2aab7a;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 50px;
+      gap: 250px;
+    }
+    .hero-text {
+      max-width: 600px;
+      flex: 1;
+    }
+    .image-content {
+      max-width: 400px;
+      flex: 1;
+    }
+    .hero-text h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+    .hero-text span {
+      color: #31cd99;
+      font-weight: bold;
+    }
+    .hero-text p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .image-content {
+  max-width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-wrapper {
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+  padding: 0 50px; /* Adds space for buttons */
+  box-sizing: border-box;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: auto;
+  border-radius: 30%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  opacity: 1;
+}
+
+.image-wrapper img.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.left-button,
+.right-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #2aab7a;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 7px 15px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.left-button {
+  left: 0;  
+}
+
+.right-button {
+  right: 0;  
+}
+
+.left-button:hover,
+.right-button:hover {
+  background-color: #1f7a56;
+  transform: scale(1.1) translateY(-50%);
+}
+
+
+    /* Overlay */
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 9998;
+    }
+    #overlay.active { opacity: 1; visibility: visible; }
+
+    /* Contact Panel */
+    .contact-panel {
+      position: fixed;
+      top: 50%;
+      right: -400px;
+      transform: translateY(-50%);
+      width: 320px;
+      max-width: 90vw;
+      max-height: 80vh;
+      background: rgba(146, 227, 203, 0.95);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      border-radius: 16px;
+      padding: 30px 25px;
+      overflow-y: auto;
+      transition: right 0.4s ease;
+      z-index: 9999;
+      color: #222;
+    }
+    .contact-panel.active { right: 20px; }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 28px;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      color: #2aab7a;
+      transition: color 0.3s ease;
+    }
+    .close-btn:hover { color: #1f7a56; }
+
+    .contact-panel h2 {
+      margin-top: 0;
+      color: #2aab7a;
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    /* Social buttons container */
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    /* Social buttons */
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .social-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 14px currentColor;
+    }
+
+    .social-btn.facebook {
+      background-color: #3b5998;
+    }
+
+    .social-btn.instagram {
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    }
+
+    .social-btn.twitter {
+      background-color: #1da1f2;
+    }
+
+    .social-btn.facebook:hover {
+      background-color: #2d4373;
+    }
+
+    .social-btn.instagram:hover {
+      filter: brightness(0.9);
+    }
+
+    .social-btn.twitter:hover {
+      background-color: #0d95e8;
+    }
+
+    /* About Card */
+    .about-card {
+      background-color: #f9f9f9;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      animation: fadeSlideUp 1s ease both;
+      margin-left: 6%;
+    }
+    .about-card h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #2aab7a;
+    }
+    .highlight { color: #ff89a3; font-weight: bold; }
+    .about-card .intro { font-size: 18px; line-height: 1.6; margin-bottom: 20px; }
+    .about-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0 0 20px 0;
+    }
+    .about-list li {
+      font-size: 17px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+    .about-list li::before {
+      content: '✅';
+      margin-right: 10px;
+      color: #2aab7a;
+    }
+    .about-card .closing {
+      font-style: italic;
+      color: #555;
+      font-size: 16px;
+    }
+
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hobbies Section */
+    .hobbies {
+      background-color: #fff6f6;
+      padding: 50px 20px;
+      text-align: center;
+      margin-top: 100px;
+    }
+    .hobbies h2 {
+      font-size: 32px;
+      color: #31cd99;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    .hobby-list {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .hobby-item {
+      background-color: #ffe5ec;
+      padding: 5px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 120px;
+      height: 120px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .hobby-item:hover {
+      transform: scale(1.1);
+      background-color: #ffcccb;
+    }
+    .hobby-item i {
+      font-size: 50px;
+      color: #31cd99;
+      margin-bottom: 15px;
+      z-index: 2;
+      position: relative;
+    }
+     
+    .hobby-item .hobby-img {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+    .hobby-item:hover .hobby-img { opacity: 1; }
+
+    .hobby-item .hobby-tooltip {
+      position: absolute;
+      bottom: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ffffff;
+      color: #333;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: opacity 0.3s ease, bottom 0.3s ease;
+      font-size: 14px;
+      width: 220px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .hobby-item.gaming:hover .hobby-tooltip {
+      opacity: 1;
+      bottom: -100px;
+    }
+
+    .logo-link {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.logo-title {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.logo-link:hover .logo-title {
+  color: #ffe5ec;  
+  transform: scale(1.05);
+}
+
+
+    /* Dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: #2aab7a;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #45cbac;
+  min-width: 160px;
+  border-radius: 8px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+  font-size: 15px;
+}
+
+.dropdown-content a:hover {
+  background-color: #2aab7a;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+  </style>
+</head>
+
+<body>
+  <nav>
+     <a href="website.html" class="logo-link">
+      <h1 class="logo-title">PORTFOLIO</h1>
+    </a>
+
+  <ul>
+    <!-- Dropdown -->
+    <li class="dropdown">
+      <button class="dropbtn">Menu ▾</button>
+      <div class="dropdown-content">
+        <a href="about.html">About</a>
+        <a href="skills.html">Skills</a>
+     
+      </div>
+    </li>
+    <li><button class="contact-btn" onclick="togglePanel()">Contact Me</button></li>
+  </ul>
+  </nav>
+
+  <!-- Overlay -->
+  <div id="overlay" onclick="togglePanel()"></div>
+
+<!-- Contact Panel -->
+<div class="contact-panel" id="contactPanel">
+  <button class="close-btn" onclick="togglePanel()">&times;</button>
+  <h2>Contact Information</h2>
+  <p>Email: hazelcanlas29@gmail.com</p>
+  <p>Phone: +123 456 7890</p>
+  <center><p>Socials</p></center>
+
+  <div class="social-buttons">
+    <a href="https://www.facebook.com/yourprofile" target="_blank" rel="noopener" class="social-btn facebook" aria-label="Facebook">
+      <!-- Facebook SVG icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+        <path d="M22.675 0h-21.35C.6 0 0 .6 0 1.325v21.351C0 23.4.6 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.894-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.312h3.59l-.467 3.622h-3.123V24h6.116C23.4 24 24 23.4 24 22.675V1.325C24 .6 23.4 0 22.675 0z"/>
+      </svg>
+    </a>
+    <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener" class="social-btn instagram" aria-label="Instagram">
+      <!-- Instagram SVG icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+        <path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.75 2a1 1 0 110 2 1 1 0 010-2zm-4.25 1.25a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 1.5a4 4 0 100 8 4 4 0 000-8z"/>
+      </svg>
+    </a>
+    <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener" class="social-btn twitter" aria-label="Twitter">
+      <!-- Twitter SVG icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+        <path d="M23.954 4.569a10 10 0 01-2.825.775 4.932 4.932 0 002.163-2.724 9.865 9.865 0 01-3.127 1.195 4.916 4.916 0 00-8.38 4.482A13.94 13.94 0 011.671 3.149a4.916 4.916 0 001.523 6.574 4.897 4.897 0 01-2.228-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.935 4.935 0 01-2.224.084 4.918 4.918 0 004.59 3.417A9.867 9.867 0 010 19.54a13.94 13.94 0 007.548 2.209c9.142 0 14.307-7.721 13.995-14.646a9.936 9.936 0 002.411-2.534z"/>
+      </svg>
+    </a>
+  </div>
+</div>
+
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-text about-card">
+      <h1><span class="highlight">Hello!</span> I'm Hazel</h1>
+      <p class="intro">I'm a web development student passionate about creating clean, user-friendly websites.</p>
+      <ul class="about-list">
+        <li>Currently learning HTML, CSS, and JavaScript</li>
+        <li>Love solving problems and designing interfaces</li>
+        <li>Dreaming of building projects that inspire</li>
+      </ul>
+      <p class="closing">I'm excited to grow as a developer and explore the endless world of tech!</p>
+    </div>
+
+    <div class="image-content">
+      <div class="image-wrapper">
+        <button class="left-button">&#10094;</button>
+        <img id="hero-image" src="picture2.jpg" alt="Image 1">
+        <button class="right-button">&#10095;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hobbies Section -->
+  <section class="hobbies">
+    <h2>My Hobbies</h2>
+    <ul class="hobby-list">
+      <li class="hobby-item gaming">
+        <div class="hobby-img" style="background-image: url('gaming.jpg');"></div>
+        <i class="fas fa-gamepad"></i>
+        
+      </li>
+      <li class="hobby-item">
+        <div class="hobby-img" style="background-image: url('crochet.jpg');"></div>
+        <i class="fas fa-scissors"></i>
+      
+      </li>
+      <li class="hobby-item">
+        <div class="hobby-img" style="background-image: url('music.jpg');"></div>
+        <i class="fas fa-music"></i>
+        
+      </li>
+      <li class="hobby-item">
+        <div class="hobby-img" style="background-image: url('watching.jpg');"></div>
+        <i class="fas fa-tv"></i>
+        
+      </li>
+    </ul>
+  </section>
+
+  <script>
+    function togglePanel() {
+      const panel = document.getElementById("contactPanel");
+      const overlay = document.getElementById("overlay");
+      panel.classList.toggle("active");
+      overlay.classList.toggle("active");
+    }
+
+    const images = ['picture2.jpg', 'picture3.jpg', 'picture.jpg'];
+    let currentIndex = 0;
+    const imgElement = document.getElementById('hero-image');
+
+    function updateImage() {
+      imgElement.classList.add('fade-out');
+      setTimeout(() => {
+        imgElement.src = images[currentIndex];
+        imgElement.onload = () => {
+          imgElement.classList.remove('fade-out');
+        };
+      }, 300);
+    }
+
+    document.querySelector('.right-button').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateImage();
+    });
+    document.querySelector('.left-button').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateImage();
+    });
+  </script>
+</body>
+</html>
